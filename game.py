@@ -38,40 +38,44 @@ class FlappyBirdGame():
     birds - a list of Bird
     '''
 
-    def __init__(self, birds):
+    def __init__(self):
 
         self.title = 'Flappy Bird'
         self.base = Base(y=730)
-        self.birds = birds
+        self.birds = None
         self.pipes = [Pipe(x=550)]
         self.score = 0
 
         self.win = pg.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
         self.clock = pg.time.Clock()
 
-    def reset(self, birds, title='Flappy Bird'):
+    def reset(self, title='Flappy Bird'):
         ''' Resets the game with a new title and
         a new list of birds
         '''
 
         self.title = title
-        self.birds = birds
+        self.birds = None
         self.pipes = [Pipe(x=550)]
         self.score = 0
 
-    def run(self, title='Flappy Bird'):
+    def run(self, birds, title='Flappy Bird'):
         ''' Given a list of Birds that were
         loaded into FlappyBirdGame during instantiation
         run the game until all of the birds die.
 
         Arguments
         ---------
+        birds - list of Bird
         title - str, title of this run
 
         Returns
         -------
         Returns a list of each birds fitness.
         '''
+
+        self.birds = birds
+
         quit = False
         while True:
             self.clock.tick(30)

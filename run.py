@@ -67,13 +67,13 @@ def evolve(birds, fitness):
     return new_birds
 
 birds = create_birds()
-flappy_bird_game = FlappyBirdGame(birds)
+flappy_bird_game = FlappyBirdGame()
 
 for generation in range(50):
 
-    birds_fitness = flappy_bird_game.run()
+    birds_fitness = flappy_bird_game.run(birds)
     birds = evolve(birds, birds_fitness)
 
-    flappy_bird_game.reset(birds, title=f'GEN {generation}')
+    flappy_bird_game.reset(title=f'GEN {generation}')
 
 flappy_bird_game.quit()
