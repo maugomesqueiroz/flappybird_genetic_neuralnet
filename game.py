@@ -117,8 +117,9 @@ class FlappyBirdGame():
 
             for bird in self.birds:
                 # Death by collision with ground
+                bird_above_screen = bird.y < 0
                 bird_touched_ground = bird.y + bird.img.get_height() >= 730
-                if bird_touched_ground and not bird.dead:
+                if (bird_touched_ground or bird_above_screen) and not bird.dead:
                     bird.dead = True
 
                 if not bird.dead:
