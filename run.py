@@ -27,21 +27,31 @@ def create_birds(n=10):
 
     birds = []
     for count in range(n):
-        birds.append(Bird(230,350, brain = Brain(np.random.rand(2,3), np.random.rand(3,1))))
+
+        w1 = np.random.rand(6,2)
+        w2 = np.random.rand(1,6)
+        brain = Brain(w1,w2)
+
+        new_bird = Bird(x=230,y=350,brain=brain)
+        birds.append(new_bird)
+
     return birds
 
 def evolve(birds, fitness):
 
+    #Sort birds by fitness
     birds_and_fitness = list(zip(birds, fitness))
-    #sort by fitness
     birds_and_fitness = sorted(birds_and_fitness, key=lambda x: x[1],reverse=True)
     sorted_birds = [bird for bird,_ in birds_and_fitness]
 
     new_birds = []
 
-    #pass on the winners
+    #Pass the winners to the next generation
     for bird in sorted_birds[:4]:
-        bird_replica = Bird(230,350,Brain(bird.brain.weights1, bird.brain.weights2))
+        w1 = bird.brain.weights1
+        w2 = bird.brain.weights2
+        new_brain = Brain(w1, w2)
+        bird_replica = Bird(x=230,y=350, brain=new_brain)
         new_birds.append(bird_replica)
 
     #Breed the winners
@@ -49,7 +59,7 @@ def evolve(birds, fitness):
     new_birds.append(sorted_birds[0]+sorted_birds[2])
     new_birds.append(sorted_birds[1]+sorted_birds[2])
 
-    #add mutate winners
+    #Mutate the winners (add gaussian noise to weights)
     new_birds.append(sorted_birds[0]+sorted_birds[0])
     new_birds.append(sorted_birds[1]+sorted_birds[1])
     new_birds.append(sorted_birds[2]+sorted_birds[2])
@@ -57,12 +67,13 @@ def evolve(birds, fitness):
     return new_birds
 
 birds = create_birds()
-fb = FlappyBirdGame(birds)
+flappy_bird_game = FlappyBirdGame(birds)
 
-for generation in range(500):
+for generation in range(50):
 
-    birds_fitness = fb.run()
+    birds_fitness = flappy_bird_game.run()
     birds = evolve(birds, birds_fitness)
-    fb.reset(birds,title=f'GEN {generation}')
 
-fb.quit()
+    flappy_bird_game.reset(birds, title=f'GEN {generation}')
+
+flappy_bird_game.quit()
