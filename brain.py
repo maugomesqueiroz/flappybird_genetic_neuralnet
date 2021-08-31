@@ -25,9 +25,9 @@ class Brain:
     Arguments
     ---------
     weights1 - weights mapping input to first hidden layer,
-        has shape (2,3)
+        has shape (6,2)
     weights2 - weights mapping first hidden layer to output,
-        has shape (3,1)
+        has shape (1,6)
     '''
 
     def __init__(self, weights1: np.array, weights2: np.array):
@@ -47,10 +47,10 @@ class Brain:
         Returns a boolean corresponding to the decision of
         wing flapping.
         '''
-        layer1_output = np.matmul(information.transpose(), self.weights1)
+        layer1_output = np.matmul(self.weights1, information)
         layer1_output = np.array([self.activation(value) for value in layer1_output])
-
-        layer2_output = np.matmul(layer1_output.transpose(), self.weights2)
+        
+        layer2_output = np.matmul(self.weights2, layer1_output)
         layer2_output = np.array([self.activation(value) for value in layer2_output])
 
         if layer2_output[0] == 1:

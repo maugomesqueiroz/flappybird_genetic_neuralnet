@@ -64,11 +64,17 @@ class Bird:
         -------
         A Bird instance
         '''
+
+        # Create a new weights matrix as mean of self and other
         new_weights1 = (self.brain.weights1 + other.brain.weights1)/2
         new_weights2 = (self.brain.weights2 + other.brain.weights2)/2
 
-        new_weights1 = new_weights1+np.random.normal(0,0.5,6).reshape(2,3)
-        new_weights2 = new_weights2+np.random.normal(0,0.5,3).reshape(3,1)
+        # Create a noise matrix with size and shape as weights matrix
+        noise_weights1 = np.random.normal(0,0.5,new_weights1.size).reshape(*new_weights1.shape)
+        noise_weights2 = np.random.normal(0,0.5,new_weights2.size).reshape(*new_weights2.shape)
+
+        new_weights1 = new_weights1 + noise_weights1
+        new_weights2 = new_weights2 + noise_weights2
 
         return Bird(230,350, Brain(new_weights1, new_weights2))
 
