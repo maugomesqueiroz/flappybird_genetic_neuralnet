@@ -8,12 +8,13 @@
 '''
 
 import numpy as np
+from typing import List
 
-from brain import Brain
-from classes import Bird
-from game import FlappyBirdGame
+from FlappyBird.brain import Brain
+from FlappyBird.classes import Bird
+from FlappyBird.game import FlappyBirdGame
 
-def create_birds(n=10):
+def create_birds(n=10) -> List[Bird]:
     ''' Creates a list of n Birds with random weights
 
     Arguments
@@ -37,8 +38,25 @@ def create_birds(n=10):
 
     return birds
 
-def evolve(birds, fitness):
+def evolve(birds: List[Bird], fitness: list) -> List[Bird]:
+    ''' Given a list of birds 10 birds and their respective fitness,
+    applies the evolution logic and returs a list of 10 new birds.
 
+    Arguments
+    ---------
+    birds - list of birds to be evolved
+    fitness - list of fitness values, number of birds to create
+
+    Returns
+    -------
+    Returns a list of Birds
+
+    Notes
+    -----
+    * Summing a bird with itself has the effect to add gaussian
+    noise to its weights
+    '''
+    
     #Sort birds by fitness
     birds_and_fitness = list(zip(birds, fitness))
     birds_and_fitness = sorted(birds_and_fitness, key=lambda x: x[1],reverse=True)
@@ -66,14 +84,16 @@ def evolve(birds, fitness):
 
     return new_birds
 
-birds = create_birds()
-flappy_bird_game = FlappyBirdGame()
 
-for generation in range(50):
+if __name__ == '__main__':
 
-    birds_fitness = flappy_bird_game.run(birds)
-    birds = evolve(birds, birds_fitness)
+    birds = create_birds()
+    flappy_bird_game = FlappyBirdGame()
 
-    flappy_bird_game.reset(title=f'GEN {generation}')
+    for generation in range(50):
 
-flappy_bird_game.quit()
+        birds_fitness = flappy_bird_game.run(birds)
+        birds = evolve(birds, birds_fitness)
+        flappy_bird_game.reset(title=f'GEN {generation}')
+
+    flappy_bird_game.quit()
